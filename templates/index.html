@@ -145,10 +145,8 @@
                                 {% for index,competitor_link in competitor_links %}
                                 <div class="flexRow">
                                     <div class="col-md-9 col-sm-8 col-xs-8">
-
-                                        <button type="button" class="btnCollapse" data-toggle="collapse"
-                                            data-target="#collapse{{index}}">
-                                            <a href="#" id="{{index}}" class="tagBTN">{{competitor_link}}</a>
+                                        <button type="button" class="btnCollapse" data-toggle="collapse" aria-expanded="true" data-target="#collapse{{index}}">
+                                            <span class="tagBTN" > {{competitor_link}}</span>
                                         </button>
                                     </div>
                                     {% if index == 0 %}
