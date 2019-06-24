@@ -1,4 +1,3 @@
-# Google Natural Language Test
+# Schema Dashoard
 
-## "/api/nl-process" : Google Natural API test
-## "/api/textrazor-process" : Textrazor API test
+
