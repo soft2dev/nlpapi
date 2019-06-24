@@ -1,8 +1,8 @@
 
 $(document).ready(function() {  
     $('#btn_submit').click(function(){
-        var url = '/api/nl-process';
-        var data = {
+        let url = '/api/nl-process';
+        let data = {
             code: $('#textarea_code').val(),
         };
         console.log('data');
