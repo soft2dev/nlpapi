@@ -45,28 +45,20 @@
 
                                         <div class="tab-content">
                                             <div id="Entities" class="tab-pane fade in active">
-                                                <div class="wordscroll">
-                                                    <div class="wordscroll">
-                                                            {{input_dom_target_text|safe}}                                                        
-                                                    </div>
-                                                </div>
-
                                                 <ul class="row boxList">
-                                                    {% for index,entity in target_ret_response_entities %}
+                                                    {% for entity in target_nlp_result.entities %}
                                                     <li>
                                                         <div class="boxPanel">
-                                                            <h5>{{index+1}}. <strong>{{entity.name}}</strong></h5>
+                                                            <h5>{{loop.index}}. <strong>{{entity.name}}</strong></h5>
                                                             <div class="row">
                                                                 <div class="col-sm-12">
-                                                                    {% if entity.metadata %}
-                                                                    {% if entity.metadata.wikipedia_url %}
                                                                     <strong>
-                                                                        <a href="{{entity.metadata.wikipedia_url}}"
+                                                                        {% if entity.wiki_url %}
+                                                                        <a href="{{entity.wiki_url}}"
                                                                             class="linkAnc" target="_blank">Wikipedia
                                                                             Article</a>
+                                                                         {% endif %}
                                                                     </strong>
-                                                                    {% endif %}
-                                                                    {% endif %}
                                                                     <div class="salience">
                                                                         <strong>Salience :</strong> {{entity.salience}}
                                                                     </div>
@@ -85,13 +77,13 @@
                                                 <ul class="row boxList">
                                                     <li>
                                                         <div class="boxPanel">
-                                                            <h5><strong>{{target_ret_response_categories.categories[0].name}}</strong>
+                                                            <h5><strong>{{target_nlp_result.categories[0].name}}</strong>
                                                             </h5>
                                                             <div class="row">
                                                                 <div class="col-sm-12">
                                                                     <div class="salience">
                                                                         <strong>Confidence :</strong>
-                                                                        {{target_ret_response_categories.categories[0].confidence}}
+                                                                        {{target_nlp_result.categories[0].confidence}}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -118,15 +110,16 @@
                                         <th>Common Entity Type</th>
                                         <th>Common Entities</th>
                                     </tr>
-                                    {% for key,value in common_entities_array %}
+
+                                    {% for key,value in commons.common_entities_array %}
                                     <tr>
-                                        {% if common_categories_array|length > loop.index-1 %}
-                                            <td data-th="Common Categories">{{common_categories_array[loop.index-1][0]}} ({{ common_categories_array[loop.index-1][1] }})</td>
+                                        {% if commons.common_categories_array|length > loop.index-1 %}
+                                            <td data-th="Common Categories">{{commons.common_categories_array[loop.index-1][0]}} ({{ commons.common_categories_array[loop.index-1][1] }})</td>
                                         {% else %}
                                             <td data-th="Common Categories"></td>    
                                         {% endif %}    
-                                        {% if common_entitytypes_array|length > loop.index-1 %}
-                                            <td data-th="Common Entity Type">{{common_entitytypes_array[loop.index-1][0]}} ({{ common_entitytypes_array[loop.index-1][1] }})</td> 
+                                        {% if commons.common_entitytypes_array|length > loop.index-1 %}
+                                            <td data-th="Common Entity Type">{{commons.common_entitytypes_array[loop.index-1][0]}} ({{ commons.common_entitytypes_array[loop.index-1][1] }})</td> 
                                         {% else %}
                                             <td data-th="Common Entity Type"></td>                                           
                                         {% endif %}
@@ -164,29 +157,21 @@
 
                                             <div class="tab-content">
                                                 <div id="Entities{{index}}" class="tab-pane fade in active">
-                                                    <div class="wordscroll">
-                                                        <p>
-                                                            {{input_dom_compeditor_texts[index]|safe}}
-                                                        </p>
-                                                    </div>
                                                     <ul class="row boxList">
-                                                        {% set key=0 %}
-                                                        {% for entity in competitors_ret_response_entities[index]['entities'] %}
+
+                                                        {% for entity in competitors_nlp_result[index]['entities'] %}
                                                         <li>
                                                             <div class="boxPanel">
-                                                                <h5>{{key+1}}. <strong>{{entity.name}}</strong></h5>
-                                                                {% set key = key + 1 %}
+                                                                <h5>{{ loop.index }}. <strong>{{entity.name}}</strong></h5>
                                                                 <div class="row">
                                                                     <div class="col-sm-12">
-                                                                        {% if entity.metadata %}
-                                                                        {% if entity.metadata.wikipedia_url %}
                                                                         <strong>
-                                                                            <a href="{{entity.metadata.wikipedia_url}}"
+                                                                            {% if entity.wiki_url %}
+                                                                            <a href="{{entity.wiki_url}}"
                                                                                 class="linkAnc" target="_blank">Wikipedia
                                                                                 Article</a>
+                                                                            {% endif %}
                                                                         </strong>
-                                                                        {% endif %}
-                                                                        {% endif %}
                                                                         <div class="salience">
                                                                             <strong>Salience :</strong> {{entity.salience}}
                                                                         </div>
@@ -205,12 +190,12 @@
                                                     <ul class="row boxList">
                                                         <li>
                                                             <div class="boxPanel bg1">
-                                                                <h5><strong>{{competitors_ret_response_categories[index].categories[0].name}}</strong>
+                                                                <h5><strong>{{competitors_nlp_result[index].categories[0].name}}</strong>
                                                                 </h5>
                                                                 <div class="row">
                                                                     <div class="col-sm-12">
                                                                         <div class="salience">
-                                                                            <strong>Confidence :</strong> {{competitors_ret_response_categories[index].categories[0].confidence}}
+                                                                            <strong>Confidence :</strong> {{competitors_nlp_result[index].categories[0].confidence}}
                                                                         </div>
                                                                     </div>
                                                                 </div>
