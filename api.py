@@ -46,6 +46,10 @@ def dictEntityRange(dictEntity):
 
 def get_entities_and_categories_with_googlenlp(soup):
 
+    [s.extract() for s in soup('img')]
+    [s.extract() for s in soup('script')]
+    [s.extract() for s in soup('style')]
+
     GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
     input_text = soup.get_text()
     input_text = strRange(input_text)
@@ -203,9 +207,6 @@ def sendGoogle():
     # html parse
     target_html = requests.get(target_link)
     target_soup = BeautifulSoup(target_html.text, 'html.parser')
-    [s.extract() for s in target_soup('img')]
-    [s.extract() for s in target_soup('script')]
-    [s.extract() for s in target_soup('style')]
 
     target_nlp_result = get_entities_and_categories_with_googlenlp(target_soup)
 
@@ -214,9 +215,6 @@ def sendGoogle():
         # html parse
         competitor_html = requests.get(competitor_link)
         competitor_soup = BeautifulSoup(competitor_html.text, 'html.parser')
-        [s.extract() for s in competitor_soup('img')]
-        [s.extract() for s in competitor_soup('script')]
-        [s.extract() for s in competitor_soup('style')]
         competitor_nlp_result = get_entities_and_categories_with_googlenlp(competitor_soup)
         competitors_nlp_result.append(competitor_nlp_result)
 
