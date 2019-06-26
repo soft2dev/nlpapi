@@ -50,7 +50,6 @@ def get_entities_and_categories_with_googlenlp(soup):
     [s.extract() for s in soup('script')]
     [s.extract() for s in soup('style')]
 
-    GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
     input_text = soup.get_text()
     input_text = strRange(input_text)
 
