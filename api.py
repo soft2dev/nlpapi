@@ -155,6 +155,22 @@ def get_commons(target_nlp_result,competitors_nlp_result):
 
             common_entitytypes_data = {}
             common_entities_data = {}
+            common_categories_data = {}
+
+            #Common Category Check
+            common_categories = {}
+            if(target_nlp_result['categories']):
+                common_target_ret_response_categories = target_nlp_result['categories'][0]['name'].split('/')[1:]
+
+                for category in common_target_ret_response_categories:
+                    common_categories[category] = 0
+
+                for competitors_categories in competitors_nlp_result:
+                    if(competitors_categories['categories']):
+                        categories = competitors_categories['categories'][0]['name'].split('/')[1:]
+                        for category in categories:
+                            if category in common_categories:
+                                common_categories[category] += 1 
 
             for key in common_entitytypes:
                 if common_entitytypes[key] == 0:
@@ -166,20 +182,12 @@ def get_commons(target_nlp_result,competitors_nlp_result):
                     continue
                 common_entities_data[key] = common_entities[key]
 
-    #Common Category Check
-    common_categories = {}
-    if(target_nlp_result['categories']):
-        common_target_ret_response_categories = target_nlp_result['categories'][0]['name'].split('/')[1:]
+            for key in common_categories:
+                if common_categories[key] == 0:
+                    continue
+                    common_categories_data[key] = common_entities[key]
+            
 
-        for category in common_target_ret_response_categories:
-            common_categories[category] = 0
-
-        for competitors_categories in competitors_nlp_result:
-            if(competitors_categories['categories']):
-                categories = competitors_categories['categories'][0]['name'].split('/')[1:]
-                for category in categories:
-                    if category in common_categories:
-                        common_categories[category] += 1 
     data_lengthes = []
     data_lengthes.append(len(common_entities_data))
     data_lengthes.append(len(common_entitytypes_data))
@@ -192,8 +200,8 @@ def get_commons(target_nlp_result,competitors_nlp_result):
     for key in common_entitytypes_data:
         temp = [key,common_entitytypes_data[key]]
         common_entitytypes_array.append(temp)
-    for key in common_categories:
-        temp = [key,common_categories[key]]
+    for key in common_categories_data:
+        temp = [key,common_categories_data[key]]
         common_categories_array.append(temp)
     for i in range(data_lengthes[0]):
         if i >= len(common_entities_array):

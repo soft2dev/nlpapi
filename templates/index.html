@@ -121,17 +121,17 @@
                                     {% if commons.common_entities_array %}
                                         {% for key, value in commons.common_entities_array %}
                                         <tr>
-                                            {% if commons.common_categories_array[loop.index-1][0] and commons.common_categories_array[loop.index-1][1] %}
+                                            {% if commons.common_categories_array[loop.index-1][0] %}
                                                 <td data-th="Common Categories">{{commons.common_categories_array[loop.index-1][0]}} ({{ commons.common_categories_array[loop.index-1][1] }})</td>
                                             {% else %}
                                                 <td data-th="Common Categories"></td>    
                                             {% endif %}    
-                                            {% if commons.common_entitytypes_array[loop.index-1][0] and commons.common_entitytypes_array[loop.index-1][0] %}
+                                            {% if commons.common_entitytypes_array[loop.index-1][0] %}
                                                 <td data-th="Common Entity Type">{{commons.common_entitytypes_array[loop.index-1][0]}} ({{ commons.common_entitytypes_array[loop.index-1][1] }})</td> 
                                             {% else %}
                                                 <td data-th="Common Entity Type"></td>                                           
                                             {% endif %}
-                                            {% if key and value %}
+                                            {% if key  %}
                                                 <td data-th="Common Entities">{{key}} ({{ value }})</td>
                                             {% else %}
                                                 <td data-th="Common Entities"></td>
