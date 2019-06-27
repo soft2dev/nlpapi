@@ -122,17 +122,17 @@
                                         {% for key in range(commons.common_max_number) %}
                                         <tr>
                                             {% if commons.common_categories_array[key] %}
-                                                <td data-th="Common Categories">{{commons.common_categories_array[key][0]}} ({{ commons.common_categories_array[key][1] }})</td>
+                                                <td data-th="Common Categories">{{commons.common_categories_array[key][0]}} ({{ commons.common_categories_array[key][1] }},{{ commons.common_categories_array[key][2] }})</td>
                                             {% else %}
                                                 <td data-th="Common Categories"></td>    
                                             {% endif %}    
                                             {% if commons.common_entitytypes_array[key] %}
-                                                <td data-th="Common Entity Type">{{commons.common_entitytypes_array[key][0]}} ({{ commons.common_entitytypes_array[key][1] }})</td> 
+                                                <td data-th="Common Entity Type">{{commons.common_entitytypes_array[key][0]}} ({{ commons.common_entitytypes_array[key][1] }},{{ commons.common_entitytypes_array[key][2] }})</td> 
                                             {% else %}
                                                 <td data-th="Common Entity Type"></td>                                           
                                             {% endif %}
                                             {% if commons.common_entities_array[key] %}
-                                                <td data-th="Common Entities">{{commons.common_entities_array[key][0]}} ({{ commons.common_entities_array[key][1] }})</td>
+                                                <td data-th="Common Entities">{{commons.common_entities_array[key][0]}} ({{ commons.common_entities_array[key][1]}},{{commons.common_entities_array[key][2]}})</td>
                                             {% else %}
                                                 <td data-th="Common Entities"></td>
                                             {% endif%}    
