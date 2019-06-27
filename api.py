@@ -161,12 +161,12 @@ def get_commons(target_nlp_result,competitors_nlp_result):
     data_lengthes.append(len(common_entitytypes))
     data_lengthes.append(len(common_categories))
     data_lengthes.sort(reverse = True)
-    
+
     for key in common_entities:
         check = 0
         if target_nlp_result['entities']:
             for entity in target_nlp_result['entities']:
-                if entity['name'] in common_entities:
+                if entity['name'] == key:
                     check = 1
         temp = [key,common_entities[key],check]
         common_entities_array.append(temp)
@@ -174,7 +174,7 @@ def get_commons(target_nlp_result,competitors_nlp_result):
         check = 0
         if target_nlp_result['entities']:
             for entity in target_nlp_result['entities']:
-                if entity['type'] in common_entitytypes:
+                if entity['type'] == key:
                     check = 1
         temp = [key,common_entitytypes[key],check]
         common_entitytypes_array.append(temp)
@@ -183,7 +183,7 @@ def get_commons(target_nlp_result,competitors_nlp_result):
         if target_nlp_result['categories']:
             target_categories = target_nlp_result['categories'][0]['name'].split('/')[1:]
             for category in target_categories:              
-                if category in common_categories:
+                if category == key:
                     check = 1
         temp = [key,common_categories[key],check]
         common_categories_array.append(temp)
@@ -196,10 +196,10 @@ def get_commons(target_nlp_result,competitors_nlp_result):
     }
 @app.route('/')
 def sendGoogle():
-    target_link = 'https://barkpost.com/dog-lover-dog-parent/'
+    target_link = 'https://www.momsstrollerreviews.com/moms-picks-top-20-best-strollers-for-2018'
     competitor_links = [
-        'https://www.wideopenpets.com/weird-things-dog-lovers/',
-        'https://www.countryliving.com/shopping/gifts/g1478/gifts-for-dog-lovers/'
+        'https://blog.go.co/2018/11/12/icons-innovators-andrew-steven-from-hvseo-co/',
+        'https://www.walmart.com/cp/strollers/118134',
     ]
 
     # html parse
