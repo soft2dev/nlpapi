@@ -187,7 +187,9 @@ def get_commons(target_nlp_result,competitors_nlp_result):
                     check = 1
         temp = [key,common_categories[key],check]
         common_categories_array.append(temp)
-
+        common_entities_array = sorted(common_entities_array, key=lambda x: x[1], reverse=True)
+        common_entitytypes_array = sorted(common_entitytypes_array, key=lambda x: x[1], reverse=True)
+        common_categories_array = sorted(common_categories_array, key=lambda x: x[1], reverse=True)
     return {
         'common_max_number':data_lengthes[0],
         'common_entities_array':common_entities_array,
@@ -196,10 +198,12 @@ def get_commons(target_nlp_result,competitors_nlp_result):
     }
 @app.route('/')
 def sendGoogle():
-    target_link = 'https://www.momsstrollerreviews.com/moms-picks-top-20-best-strollers-for-2018'
+    target_link = 'https://hvseo.co'
     competitor_links = [
-        'https://blog.go.co/2018/11/12/icons-innovators-andrew-steven-from-hvseo-co/',
-        'https://www.walmart.com/cp/strollers/118134',
+        'https://www.searchmetrics.com/glossary/on-page-optimization/',
+        'https://moz.com/blog/category/on-page-seo',
+        'https://moz.com/learn/seo/on-page-factors',
+        'https://backlinko.com/on-page-seo'
     ]
 
     # html parse
