@@ -45,6 +45,7 @@
 
                                         <div class="tab-content">
                                             <div id="Entities" class="tab-pane fade in active">
+                                                {% if target_nlp_result.entities %}
                                                 <ul class="row boxList">
                                                     {% for entity in target_nlp_result.entities %}
                                                     <li>
@@ -71,22 +72,29 @@
                                                     </li>
                                                     {% endfor %}
                                                 </ul>
+                                                {% else %}
+                                                    <h5><strong>There is no entity</strong></h5>
+                                                {% endif %}
                                             </div>
 
                                             <div id="Categories" class="tab-pane fade">
                                                 <ul class="row boxList">
                                                     <li>
                                                         <div class="boxPanel">
-                                                            <h5><strong>{{target_nlp_result.categories[0].name}}</strong>
-                                                            </h5>
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <div class="salience">
-                                                                        <strong>Confidence :</strong>
-                                                                        {{target_nlp_result.categories[0].confidence}}
+                                                            {% if target_nlp_result.categories %}
+                                                                <h5><strong>{{target_nlp_result.categories[0].name}}</strong>
+                                                                </h5>
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <div class="salience">
+                                                                            <strong>Confidence :</strong>
+                                                                            {{target_nlp_result.categories[0].confidence}}
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            {% else %}
+                                                            <h5><strong>There is no category</strong></h5>
+                                                            {% endif %}
                                                         </div>
                                                         <!--boxPanel-->
                                                     </li>
@@ -103,29 +111,38 @@
                 </div>
                 <div class="col-lg-4 col-sm-12 col-xs-12">
                     <div class="schemeWhiteSection">
-                            <ul class="row row boxList">
+                            <ul class="row row commonBoxList">
                                 <table class="rwd-table">
                                     <tr>
                                         <th>Common Categories</th>
                                         <th>Common Entity Type</th>
                                         <th>Common Entities</th>
                                     </tr>
-
-                                    {% for key,value in commons.common_entities_array %}
-                                    <tr>
-                                        {% if commons.common_categories_array|length > loop.index-1 %}
-                                            <td data-th="Common Categories">{{commons.common_categories_array[loop.index-1][0]}} ({{ commons.common_categories_array[loop.index-1][1] }})</td>
-                                        {% else %}
-                                            <td data-th="Common Categories"></td>    
-                                        {% endif %}    
-                                        {% if commons.common_entitytypes_array|length > loop.index-1 %}
-                                            <td data-th="Common Entity Type">{{commons.common_entitytypes_array[loop.index-1][0]}} ({{ commons.common_entitytypes_array[loop.index-1][1] }})</td> 
-                                        {% else %}
-                                            <td data-th="Common Entity Type"></td>                                           
-                                        {% endif %}
-                                            <td data-th="Common Entities">{{key}} ({{ value }})</td>
-                                    </tr>
-                                    {% endfor %}
+                                    {% if commons.common_entities_array %}
+                                        {% for key, value in commons.common_entities_array %}
+                                        <tr>
+                                            {% if commons.common_categories_array[loop.index-1][0] and commons.common_categories_array[loop.index-1][1] %}
+                                                <td data-th="Common Categories">{{commons.common_categories_array[loop.index-1][0]}} ({{ commons.common_categories_array[loop.index-1][1] }})</td>
+                                            {% else %}
+                                                <td data-th="Common Categories"></td>    
+                                            {% endif %}    
+                                            {% if commons.common_entitytypes_array[loop.index-1][0] and commons.common_entitytypes_array[loop.index-1][0] %}
+                                                <td data-th="Common Entity Type">{{commons.common_entitytypes_array[loop.index-1][0]}} ({{ commons.common_entitytypes_array[loop.index-1][1] }})</td> 
+                                            {% else %}
+                                                <td data-th="Common Entity Type"></td>                                           
+                                            {% endif %}
+                                            {% if key and value %}
+                                                <td data-th="Common Entities">{{key}} ({{ value }})</td>
+                                            {% else %}
+                                                <td data-th="Common Entities"></td>
+                                            {% endif%}    
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <td data-th="Common Categories">There is no common category </td>
+                                        <td data-th="Common Entity Type">There is no common entity type </td>
+                                        <td data-th="Common Entities">There is no common entity</td>    
+                                    {% endif %}
                                 </table>
                             </ul>
                     </div>
@@ -158,37 +175,41 @@
                                             <div class="tab-content">
                                                 <div id="Entities{{index}}" class="tab-pane fade in active">
                                                     <ul class="row boxList">
-
-                                                        {% for entity in competitors_nlp_result[index]['entities'] %}
-                                                        <li>
-                                                            <div class="boxPanel">
-                                                                <h5>{{ loop.index }}. <strong>{{entity.name}}</strong></h5>
-                                                                <div class="row">
-                                                                    <div class="col-sm-12">
-                                                                        <strong>
-                                                                            {% if entity.wiki_url %}
-                                                                            <a href="{{entity.wiki_url}}"
-                                                                                class="linkAnc" target="_blank">Wikipedia
-                                                                                Article</a>
-                                                                            {% endif %}
-                                                                        </strong>
-                                                                        <div class="salience">
-                                                                            <strong>Salience :</strong> {{entity.salience}}
+                                                        {% if competitors_nlp_result[index]['entities'] %}
+                                                            {% for entity in competitors_nlp_result[index]['entities'] %}
+                                                            <li>
+                                                                <div class="boxPanel">
+                                                                    <h5>{{ loop.index }}. <strong>{{entity.name}}</strong></h5>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12">
+                                                                            <strong>
+                                                                                {% if entity.wiki_url %}
+                                                                                <a href="{{entity.wiki_url}}"
+                                                                                    class="linkAnc" target="_blank">Wikipedia
+                                                                                    Article</a>
+                                                                                {% endif %}
+                                                                            </strong>
+                                                                            <div class="salience">
+                                                                                <strong>Salience :</strong> {{entity.salience}}
+                                                                            </div>
                                                                         </div>
                                                                     </div>
+                                                                    <a class="btnLink {{entity.type}}_COLOR"
+                                                                        href="#">{{entity.type}}</a>
                                                                 </div>
-                                                                <a class="btnLink {{entity.type}}_COLOR"
-                                                                    href="#">{{entity.type}}</a>
-                                                            </div>
-                                                            <!--boxPanel-->
-                                                        </li>
-                                                        {% endfor %}
+                                                                <!--boxPanel-->
+                                                            </li>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                        <h5><strong>There is no entity</strong></h5>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
 
                                                 <div id="Categories{{index}}" class="tab-pane fade">
                                                     <ul class="row boxList">
                                                         <li>
+                                                            {% if competitors_nlp_result[index].categories %}
                                                             <div class="boxPanel bg1">
                                                                 <h5><strong>{{competitors_nlp_result[index].categories[0].name}}</strong>
                                                                 </h5>
@@ -201,11 +222,12 @@
                                                                 </div>
                                                             </div>
                                                             <!--boxPanel-->
+                                                            {% else %}
+                                                            <h5><strong>There is no category</strong></h5>
+                                                            {% endif %}
                                                         </li>
                                                     </ul>
                                                     <br>
-                                                    <a href="#" class="links">See a complete list of content
-                                                        categories.</a>
                                                 </div>
                                             </div>
 

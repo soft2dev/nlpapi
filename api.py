@@ -112,69 +112,79 @@ def get_entities_and_categories_with_googlenlp(soup):
     # }
 def get_commons(target_nlp_result,competitors_nlp_result):
 
-    #Common Category Check
-    common_categories = {}
-    common_target_ret_response_categories = target_nlp_result['categories'][0]['name'].split('/')[1:]
+    common_entities_array = []
+    common_entitytypes_array = []
+    common_categories_array = []
 
-    for category in common_target_ret_response_categories:
-        common_categories[category] = 0
-
-    for competitors_categories in competitors_nlp_result:
-        categories = competitors_categories['categories'][0]['name'].split('/')[1:]
-        for category in categories:
-            if category in common_categories:
-                common_categories[category] += 1 
-  
     #Common Entity Type and Entity Check
     common_entities = {}
     common_entitytypes = {}
     common_target_entitytypes = {}
     common_target_entites = {}
-    for entity in target_nlp_result['entities']:
-        common_target_entites[entity['name']] = entity['name']
-        common_target_entitytypes[entity['type']] = entity['type']
+    if target_nlp_result['entities']:
+        for entity in target_nlp_result['entities']:
+            common_target_entites[entity['name']] = entity['name']
+            common_target_entitytypes[entity['type']] = entity['type']
 
-    common_com_entitytypes = {}
-    common_com_entites = {}
-    for i in range(len(competitors_nlp_result)):
-        common_com_entites[i] = {}
-        common_com_entitytypes[i] = {}
-        for entity in competitors_nlp_result[i]['entities']:
-            common_com_entites[i][entity['name']]= entity['name']
-            common_com_entitytypes[i][entity['type']]= entity['type']
+        common_com_entitytypes = {}
+        common_com_entites = {}
+        if len(competitors_nlp_result):
+            for i in range(len(competitors_nlp_result)):
+                common_com_entites[i] = {}
+                common_com_entitytypes[i] = {}
+                for entity in competitors_nlp_result[i]['entities']:
+                    common_com_entites[i][entity['name']]= entity['name']
+                    common_com_entitytypes[i][entity['type']]= entity['type']
+    
 
-    for key in common_target_entitytypes:
-        common_entitytypes[key] = 0
-        
-    for key in range(len(common_com_entitytypes)):
-        for entitytype in common_com_entitytypes[key]:
-            if entitytype in common_target_entitytypes:
-                common_entitytypes[entitytype] += 1 
+            for key in common_target_entitytypes:
+                common_entitytypes[key] = 0
+                
+            for key in range(len(common_com_entitytypes)):
+                for entitytype in common_com_entitytypes[key]:
+                    if entitytype in common_target_entitytypes:
+                        common_entitytypes[entitytype] += 1 
 
-    for key in common_target_entites:
-        common_entities[key] = 0
-        
-    for key in range(len(common_com_entites)):
-        for entity in common_com_entites[key]:
-            if entity in common_target_entites:
-                common_entities[entity] += 1                 
+            for key in common_target_entites:
+                common_entities[key] = 0
+                
+            for key in range(len(common_com_entites)):
+                for entity in common_com_entites[key]:
+                    if entity in common_target_entites:
+                        common_entities[entity] += 1                 
 
-    common_entitytypes_data = {}
-    common_entities_data = {}
+            common_entitytypes_data = {}
+            common_entities_data = {}
 
-    for key in common_entitytypes:
-        if common_entitytypes[key] == 0:
-            continue
-        common_entitytypes_data[key] = common_entitytypes[key] 
+            for key in common_entitytypes:
+                if common_entitytypes[key] == 0:
+                    continue
+                common_entitytypes_data[key] = common_entitytypes[key] 
 
-    for key in common_entities:
-        if common_entities[key] == 0:
-            continue
-        common_entities_data[key] = common_entities[key]
+            for key in common_entities:
+                if common_entities[key] == 0:
+                    continue
+                common_entities_data[key] = common_entities[key]
 
-    common_entities_array = []
-    common_entitytypes_array = []
-    common_categories_array = []
+    #Common Category Check
+    common_categories = {}
+    if(target_nlp_result['categories']):
+        common_target_ret_response_categories = target_nlp_result['categories'][0]['name'].split('/')[1:]
+
+        for category in common_target_ret_response_categories:
+            common_categories[category] = 0
+
+        for competitors_categories in competitors_nlp_result:
+            if(competitors_categories['categories']):
+                categories = competitors_categories['categories'][0]['name'].split('/')[1:]
+                for category in categories:
+                    if category in common_categories:
+                        common_categories[category] += 1 
+    data_lengthes = []
+    data_lengthes.append(len(common_entities_data))
+    data_lengthes.append(len(common_entitytypes_data))
+    data_lengthes.append(len(common_categories))
+    data_lengthes.sort(reverse = True)
     
     for key in common_entities_data:
         temp = [key,common_entities_data[key]]
@@ -185,6 +195,13 @@ def get_commons(target_nlp_result,competitors_nlp_result):
     for key in common_categories:
         temp = [key,common_categories[key]]
         common_categories_array.append(temp)
+    for i in range(data_lengthes[0]):
+        if i >= len(common_entities_array):
+            common_entities_array.append(['',''])
+        if i >= len(common_entitytypes_array):
+            common_entitytypes_array.append(['',''])
+        if i >= len(common_categories_array):
+            common_categories_array.append(['',''])    
 
     return {
         'common_entities_array':common_entities_array,
@@ -201,8 +218,9 @@ def sendGoogle():
 
     # html parse
     target_html = requests.get(target_link)
+    
     target_soup = BeautifulSoup(target_html.text, 'html.parser')
-
+  
     target_nlp_result = get_entities_and_categories_with_googlenlp(target_soup)
 
     competitors_nlp_result = []
@@ -214,7 +232,7 @@ def sendGoogle():
         competitors_nlp_result.append(competitor_nlp_result)
 
     commons = get_commons(target_nlp_result,competitors_nlp_result)
-    
+
     return render_template('index.html',
         target_link = target_link,
         competitor_links = enumerate(competitor_links),
