@@ -62,7 +62,7 @@ def get_entities_and_categories_with_googlenlp(soup):
     entities = requests.post('https://language.googleapis.com/v1/documents:analyzeEntities?fields=entities%2Clanguage&key='+GOOGLE_API_KEY, headers=headers_gnl, data=target_data_gnl.encode('utf-8'))
     categories= requests.post('https://language.googleapis.com/v1/documents:classifyText?key='+GOOGLE_API_KEY, headers=headers_gnl, data=target_data_gnl.encode('utf-8'))
     response_entities = json.loads(entities.text)
-    response_entities= dictEntityRange(response_entities['entities'])
+    response_entities= dictEntityRange(response_entities.get('entities', []))
     categories = json.loads(categories.text)
     new_entities = []
     
@@ -86,7 +86,7 @@ def get_entities_and_categories_with_googlenlp(soup):
         })
     return {
         "entities": new_entities,
-        "categories": categories['categories']
+        "categories": categories.get('categories', [])
     }
 
 # def get_entities_and_categories_with_googlenlp(soup): return value type
@@ -193,14 +193,10 @@ def get_commons(target_nlp_result,competitors_nlp_result):
     }
 @app.route('/')
 def sendGoogle():
-    target_link = 'https://www.momsstrollerreviews.com/moms-picks-top-20-best-strollers-for-2018'
+    target_link = 'https://barkpost.com/dog-lover-dog-parent/'
     competitor_links = [
-        'https://www.walmart.com/cp/strollers/118134',
-        'https://www.target.com/c/strollers-baby/-/n-5xtk7',
-        'https://www.buybuybaby.com/store/category/strollers/strollers/32572/',
-        'https://www.amazon.com/baby-strollers-tandem-jogger-double-triple/b?ie=utf8&node=166842011',
-        'https://www.amazon.com/best-sellers-baby-strollers/zgbs/baby-products/166842011',
-        'http://www.gracobaby.com/en-US',
+        'https://www.wideopenpets.com/weird-things-dog-lovers/',
+        'https://www.countryliving.com/shopping/gifts/g1478/gifts-for-dog-lovers/'
     ]
 
     # html parse
