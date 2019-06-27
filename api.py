@@ -185,7 +185,7 @@ def get_commons(target_nlp_result,competitors_nlp_result):
             for key in common_categories:
                 if common_categories[key] == 0:
                     continue
-                    common_categories_data[key] = common_entities[key]
+                common_categories_data[key] = common_entities[key]
             
 
     data_lengthes = []
@@ -203,22 +203,16 @@ def get_commons(target_nlp_result,competitors_nlp_result):
     for key in common_categories_data:
         temp = [key,common_categories_data[key]]
         common_categories_array.append(temp)
-    for i in range(data_lengthes[0]):
-        if i >= len(common_entities_array):
-            common_entities_array.append(['',''])
-        if i >= len(common_entitytypes_array):
-            common_entitytypes_array.append(['',''])
-        if i >= len(common_categories_array):
-            common_categories_array.append(['',''])    
 
     return {
+        'common_max_number':data_lengthes[0],
         'common_entities_array':common_entities_array,
         'common_entitytypes_array':common_entitytypes_array,
         'common_categories_array':common_categories_array
     }
 @app.route('/')
 def sendGoogle():
-    target_link = 'https://barkpost.com/dog-lover-dog-parent/'
+    target_link = 'https://barkpost.com/dog-lover-dog-parent'
     competitor_links = [
         'https://www.wideopenpets.com/weird-things-dog-lovers/',
         'https://www.countryliving.com/shopping/gifts/g1478/gifts-for-dog-lovers/'
@@ -240,7 +234,6 @@ def sendGoogle():
         competitors_nlp_result.append(competitor_nlp_result)
 
     commons = get_commons(target_nlp_result,competitors_nlp_result)
-
     return render_template('index.html',
         target_link = target_link,
         competitor_links = enumerate(competitor_links),

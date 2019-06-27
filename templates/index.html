@@ -118,21 +118,21 @@
                                         <th>Common Entity Type</th>
                                         <th>Common Entities</th>
                                     </tr>
-                                    {% if commons.common_entities_array %}
-                                        {% for key, value in commons.common_entities_array %}
+                                    {% if commons.common_max_number %}
+                                        {% for key in range(commons.common_max_number) %}
                                         <tr>
-                                            {% if commons.common_categories_array[loop.index-1][0] %}
-                                                <td data-th="Common Categories">{{commons.common_categories_array[loop.index-1][0]}} ({{ commons.common_categories_array[loop.index-1][1] }})</td>
+                                            {% if commons.common_categories_array[key] %}
+                                                <td data-th="Common Categories">{{commons.common_categories_array[key][0]}} ({{ commons.common_categories_array[key][1] }})</td>
                                             {% else %}
                                                 <td data-th="Common Categories"></td>    
                                             {% endif %}    
-                                            {% if commons.common_entitytypes_array[loop.index-1][0] %}
-                                                <td data-th="Common Entity Type">{{commons.common_entitytypes_array[loop.index-1][0]}} ({{ commons.common_entitytypes_array[loop.index-1][1] }})</td> 
+                                            {% if commons.common_entitytypes_array[key] %}
+                                                <td data-th="Common Entity Type">{{commons.common_entitytypes_array[key][0]}} ({{ commons.common_entitytypes_array[key][1] }})</td> 
                                             {% else %}
                                                 <td data-th="Common Entity Type"></td>                                           
                                             {% endif %}
-                                            {% if key  %}
-                                                <td data-th="Common Entities">{{key}} ({{ value }})</td>
+                                            {% if commons.common_entities_array[key] %}
+                                                <td data-th="Common Entities">{{commons.common_entities_array[key][0]}} ({{ commons.common_entities_array[key][1] }})</td>
                                             {% else %}
                                                 <td data-th="Common Entities"></td>
                                             {% endif%}    
